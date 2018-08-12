@@ -75,7 +75,7 @@ final class ColorBlockCollectionViewController: UICollectionViewController, Colo
     func dismissPaletteCollectionView(forIndex index: Int) {
         let path = IndexPath.init(row: index, section: 0)
         let cell = collectionView?.cellForItem(at: path)
-        for view in (cell?.subviews)!{
+        for case let view as ColorPaletteCollectionView in (cell?.subviews)!{
             view.removeFromSuperview()
         }
         collectionView?.setNeedsLayout()
