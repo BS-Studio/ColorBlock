@@ -14,8 +14,10 @@ final class ColorBlockCollectionViewController: UICollectionViewController, Colo
     fileprivate let reuseIdentifier = "colorBlockCell"
     var panColorBlockCollectionViewGestureRecognizer : UIPanGestureRecognizer = UIPanGestureRecognizer()
     var colorViewDictionary : [Int: UIColor] = [0: .red , 1: .orange , 2 : .yellow , 3: .green , 4: .blue]
+    var currentColorPaletteViewIndex: Int? = nil
     var numberOfColorBlocks : Int = 3{
         didSet{
+            removePaletteViewIfIndexSet()
             collectionView?.reloadData()
             collectionView?.setNeedsLayout()
         }
@@ -46,12 +48,14 @@ final class ColorBlockCollectionViewController: UICollectionViewController, Colo
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        removePaletteViewIfIndexSet()
         if (!((collectionView.cellForItem(at: indexPath)?.subviews.count)! > 1 )){
             let paletteCollectionView = ColorPaletteCollectionView(frame: (collectionView.cellForItem(at: indexPath)?.bounds)!, collectionViewLayout: UICollectionViewFlowLayout.init())
             paletteCollectionView.paletteDelegate = self
             paletteCollectionView.parentIndex = indexPath.item
             collectionView.cellForItem(at: indexPath)?.addSubview(paletteCollectionView)
             paletteCollectionView.bringSubview(toFront: collectionView.cellForItem(at: indexPath)!)
+            currentColorPaletteViewIndex = indexPath.item
         }
     }
     
@@ -62,6 +66,12 @@ final class ColorBlockCollectionViewController: UICollectionViewController, Colo
         collectionView?.setNeedsLayout()
     }
     
+    func removePaletteViewIfIndexSet(){
+        if let paletteIndex = currentColorPaletteViewIndex{
+            dismissPaletteCollectionView(forIndex: paletteIndex)
+        }
+    }
+    
     func dismissPaletteCollectionView(forIndex index: Int) {
         let path = IndexPath.init(row: index, section: 0)
         let cell = collectionView?.cellForItem(at: path)
@@ -69,6 +79,7 @@ final class ColorBlockCollectionViewController: UICollectionViewController, Colo
             view.removeFromSuperview()
         }
         collectionView?.setNeedsLayout()
+        currentColorPaletteViewIndex = nil
     }
     
 }
