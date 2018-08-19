@@ -15,7 +15,8 @@ protocol ColorPaletteCollectionViewDelegate : class {
     func dismissPaletteCollectionView(forIndex index: Int)
 }
 
-class ColorPaletteCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{     
+class ColorPaletteCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    let colorScrubber = ColorScrubber(frame: CGRect.zero)
     var parentIndex = 0
     let colorsArray : [UIColor] = [.red, .orange, .yellow, .green, .blue, .purple, .brown, .black, .white]
     weak var paletteDelegate : ColorPaletteCollectionViewDelegate?
