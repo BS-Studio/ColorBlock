@@ -45,6 +45,7 @@ class ColorScrubber: UIControl {
         layer.addSublayer(selectorLayer)
         
         updateLayerFrames()
+        updateSelectorColor()
     }
     
     required init?(coder : NSCoder) {
@@ -56,12 +57,15 @@ class ColorScrubber: UIControl {
         gradientTrack.setNeedsDisplay()
         
         let selectorCenter = CGFloat(positionForValue(value: scrubValue))
-        let color : UIColor = UIColor.init(hue: 0.675, saturation: CGFloat(scrubValue), brightness: 1.0, alpha: 1.0)
-        //gradientTrack.colors = [UIColor.white.cgColor, color.cgColor, UIColor.black.cgColor]
-        selectorLayer.backgroundColor = color.withAlphaComponent(0.8).cgColor
 
         selectorLayer.frame = CGRect(x: 0.0, y: selectorCenter, width: bounds.width, height: selectorHeight)
         selectorLayer.setNeedsDisplay()
+    }
+    
+    func updateSelectorColor(){
+        let color : UIColor = UIColor.init(hue: 0.675, saturation: CGFloat(scrubValue), brightness: 1.0, alpha: 1.0)
+        //gradientTrack.colors = [UIColor.white.cgColor, color.cgColor, UIColor.black.cgColor]
+        selectorLayer.backgroundColor = color.withAlphaComponent(0.8).cgColor
     }
     
     func positionForValue(value: Double) -> Double{
@@ -109,6 +113,7 @@ class ColorScrubber: UIControl {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         updateLayerFrames()
+        updateSelectorColor()
         CATransaction.commit()
         
         return true
